@@ -286,7 +286,7 @@ class Engine {
     if (port === '8082') {
       return 'http://localhost:4000/api/v1';
     } else {
-      return `http://engine.zvyezda.com/api/v1`;
+      return `https://engine.zvyezda.com/api/v1`;
     }
   }
 }
