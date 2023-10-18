@@ -239,8 +239,8 @@ class Engine {
         },
         body: JSON.stringify(body || {}),
       });
-      console.log("Engine: ", response);
-      console.log(`${this.serverUrl}${event}`)
+      console.log('Engine: ', response);
+      console.log(`${this.serverUrl}${event}`);
       const json = await response.json();
       const server = json.server;
       const data = json.data;

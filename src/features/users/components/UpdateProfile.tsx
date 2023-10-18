@@ -1,4 +1,4 @@
-import { MdEdit } from 'react-icons/md'
+import { MdEdit } from 'react-icons/md';
 import * as z from 'zod';
 
 import { Button } from '../../../components/Elements';

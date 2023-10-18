@@ -20,6 +20,7 @@
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
     "heroicons": "^2.0.18",
+    "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",

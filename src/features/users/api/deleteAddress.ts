@@ -24,10 +24,7 @@ export const useDeleteAddress = ({ config }: UseDeleteAddressOptions = {}) => {
 
       const previousAddresses = queryClient.getQueryData<Address[]>('addresses');
 
-      queryClient.setQueryData(
-        'addresses',
-        previousAddresses?.filter((address) => address.id !== deletedAddress.id),
-      );
+      queryClient.setQueryData('addresses', previousAddresses?.filter((address) => address.id !== deletedAddress.id));
 
       return { previousAddresses };
     },

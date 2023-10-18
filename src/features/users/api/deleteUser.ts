@@ -28,10 +28,7 @@ export const useDeleteUser = ({ config }: UseDeleteUserOptions = {}) => {
 
       const previousUsers = queryClient.getQueryData<Account[]>('users');
 
-      queryClient.setQueryData(
-        'users',
-        previousUsers?.filter((user) => user.id !== deletedUser.userId),
-      );
+      queryClient.setQueryData('users', previousUsers?.filter((user) => user.id !== deletedUser.userId));
 
       return { previousUsers };
     },
