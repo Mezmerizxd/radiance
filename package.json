@@ -6,13 +6,14 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "v1",
     "@hookform/resolvers": "^3.3.2",
+    "@prisma/client": "5.4.2",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-query": "^5.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.59",
+    "@types/node": "^20.8.7",
     "@types/react": "^18.2.29",
     "@types/react-dom": "^18.2.14",
     "axios": "^1.5.1",
@@ -40,9 +41,10 @@
     "zustand": "^4.4.3"
   },
   "scripts": {
-    "start": "cross-env react-app-rewired start",
-    "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
-    "watch": "cross-env PORT=8082 react-app-rewired start",
+    "start": "lerna run start --stream --parallel",
+    "watch": "lerna run watch --stream --parallel",
+    "build": "lerna run build --stream --parallel",
+    "database:migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev",
     "prettier": "prettier src/**/*.{ts,tsx} --write",
     "react:start": "react-scripts start",
     "react:build": "react-scripts build",
@@ -62,6 +64,10 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^7.3.0",
+    "lerna": "^7.4.1",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.4.2"
   }
 }

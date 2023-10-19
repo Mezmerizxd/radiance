@@ -283,7 +283,7 @@ class Engine {
   private getServerUrl(): string {
     const { port } = window.location;
 
-    if (port === '8082') {
+    if (port === '8080') {
       return 'http://localhost:4000/api/v1';
     } else {
       return `https://engine.zvyezda.com/api/v1`;

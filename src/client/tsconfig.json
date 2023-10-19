@@ -26,6 +26,7 @@
     "experimentalDecorators": true
   },
   "include": [
-    "src"
+    "./src",
+    "./types.d.ts"
   ]
 }

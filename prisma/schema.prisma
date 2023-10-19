@@ -1,0 +1,58 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_HOST")
+}
+
+enum Roles {
+  USER
+  DEVELOPER
+  ADMIN
+}
+
+model Accounts {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  username  String     @unique
+  password  String
+  token     String?    @unique
+  tokenExp  DateTime?
+  role      Roles      @default(USER)
+  avatar    String?
+  biography String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  addresses Address[]
+  bookings  Bookings[]
+}
+
+model Bookings {
+  id              String   @id @default(uuid())
+  date            DateTime
+  price           Int
+  serviceType     Int      @default(0)
+  timeSlot        Int      @default(0)
+  additionalNotes String   @default("")
+  paid            Boolean  @default(false)
+  confirmed       Boolean  @default(false)
+  paymentIntentId String?
+  addressId       String
+  accountId       String
+  account         Accounts @relation(fields: [accountId], references: [id])
+  createdAt       DateTime @default(now())
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  street     String
+  city       String
+  state      String
+  country    String
+  postalCode String
+  accountId  String
+  account    Accounts @relation(fields: [accountId], references: [id])
+}
