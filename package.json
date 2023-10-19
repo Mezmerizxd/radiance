@@ -2,6 +2,21 @@
   "name": "radiance",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "lerna run start --stream --parallel",
+    "watch": "lerna run watch --stream --parallel",
+    "build": "lerna run build --stream --parallel",
+    "client:start": "lerna run start --scope client --stream",
+    "client:build": "lerna run build --scope client --stream",
+    "client:watch": "lerna run watch --scope client --stream",
+    "database:migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev",
+    "database:migrate:deploy": "dotenv -e .env.local -- npx prisma migrate deploy",
+    "prettier": "prettier src/**/*.{ts,tsx} --write",
+    "react:start": "react-scripts start",
+    "react:build": "react-scripts build",
+    "react:test": "react-scripts test",
+    "react:eject": "react-scripts eject"
+  },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "v1",
@@ -39,20 +54,6 @@
     "web-vitals": "^2.1.4",
     "zod": "^3.22.4",
     "zustand": "^4.4.3"
-  },
-  "scripts": {
-    "start": "lerna run start --stream --parallel",
-    "watch": "lerna run watch --stream --parallel",
-    "build": "lerna run build --stream --parallel",
-    "client:start": "lerna run start --scope client --stream",
-    "client:build": "lerna run build --scope client --stream",
-    "client:watch": "lerna run watch --scope client --stream",
-    "database:migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev",
-    "prettier": "prettier src/**/*.{ts,tsx} --write",
-    "react:start": "react-scripts start",
-    "react:build": "react-scripts build",
-    "react:test": "react-scripts test",
-    "react:eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [

@@ -20,7 +20,7 @@ func InitEnvConfigs() {
 }
 
 type EnvironmentConfig struct {
-	Mode string `mapstructure:"NODE_ENV"`
+	Mode string `mapstructure:"MODE"`
 	Port string `mapstructure:"SERVER_PORT"`
 	DatabaseHost string `mapstructure:"DB_HOST"`
 	SocketHost string `mapstructure:"SOCKET_HOST"`
