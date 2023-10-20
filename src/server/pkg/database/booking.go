@@ -297,3 +297,22 @@ func UpdateBooking(booking types.Booking) error {
 	
 	return nil
 }
+
+func DeleteAllBookingsByAddressID(addressID string) (error) {
+	if connection == nil {
+		return types.ErrorFailedToConnectToDatabase
+	}
+
+	_, err := connection.Exec(`
+		DELETE FROM 
+			public."Bookings" 
+		WHERE 
+			"addressId" = $1
+	`, addressID)
+	if err != nil {
+		fmt.Println("Database, DeleteAllBookingsByAddressID:", err)
+		return types.ErrorFailedToUpdateDatabase
+	}
+	
+	return nil
+} 

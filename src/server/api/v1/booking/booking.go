@@ -58,6 +58,7 @@ func (b *booking) GetAllBookings(c *gin.Context) {
 
 	for _, booking := range *bookings {
 		address, err := database.GetAddressByID(booking.AddressID)
+
 		if err != nil {
 			c.JSON(400, gin.H{
 				"server": gin.H{

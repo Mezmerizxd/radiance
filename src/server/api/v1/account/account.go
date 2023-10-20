@@ -381,12 +381,25 @@ func (a *account) DeleteAddress(c *gin.Context) {
 		return
 	}
 
-	err := database.DeleteAddress(data.ID)
+	// Delete bookings associated with address
+	err := database.DeleteAllBookingsByAddressID(data.ID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	err2 := database.DeleteAddress(data.ID)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"server": gin.H{
 				"success": false,	
-				"error": err.Error(),
+				"error": err2.Error(),
 			},
 			"data": nil,
 		})

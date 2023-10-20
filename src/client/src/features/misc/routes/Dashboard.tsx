@@ -31,12 +31,13 @@ export const Dashboard = () => {
       {!addressesQuery.data?.length && (
         <div className="border p-2 my-2 rounded-md border-red-600/50 bg-red-600/10 text-red-600">
           <h3>
-            You need to add an address before you can start booking. Go to your{' '}
+            You need to add an address before you can start booking. Go to your
             <span
               className="font-bold underline cursor-pointer hover:text-red-700"
               onClick={() => navigate('/app/profile')}
             >
-              Profile
+              {' '}
+              Profile{' '}
             </span>
             to add it.
           </h3>
