@@ -27,6 +27,18 @@ export const Order = () => {
           forbiddenFallback={<div>Only user can view this.</div>}
           allowedRoles={[ROLES.USER, ROLES.DEVELOPER, ROLES.ADMIN]}
         >
+          <div className="text-md my-2 py-2">
+            <p className="flex">
+              Create an order by selecting the
+              <span>
+                <div className="w-fit border p-0.5 mx-1 rounded-md border-green-500/50 bg-green-500/10 text-green-500 text-xs">
+                  <p>Book</p>
+                </div>
+              </span>
+              option on the calendar and filling out the details.
+            </p>
+            <p>Once you have created an order, it will be sent to an Admin where they can Confirm the request.</p>
+          </div>
           <Calendar<Booking>
             entries={bookingsQuery?.data ? bookingsQuery?.data?.filter((booking) => booking.confirmed) : []}
             dateField="date"
