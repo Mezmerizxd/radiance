@@ -31,7 +31,7 @@
   - [ ] Delete Account
 - Booking System
   - [x] Create Booking
-  - [ ] Edit Booking <span style="color:yellow">(In Progress)</span>.
+  - [x] Edit Booking
   - [x] Cancel Booking
   - [x] View Bookings (Calendar)
   - [x] View Bookings (List)
@@ -45,6 +45,14 @@
   - [ ] View Payment Details
   - [ ] View Payment Receipt
   - [ ] Payment Email Notifications
+
+### Estimated Timelines
+
+Desired timelines that I would like to achieve, but not guaranteed.
+At the moment I'm averaging 1 - 2 hours per day, so I'm not sure if I can achieve these timelines.
+
+- 6 - 8 Hours / Day, £13 / Hour [View](./docs/images/TIMELINE_01.png)
+- 3 - 5 Hours / Day, £13 / Hour [View](./docs/images/TIMELINE_02.png)
 
 ### Platforms
 
