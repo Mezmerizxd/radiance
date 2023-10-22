@@ -3,9 +3,10 @@ import { useConfirmRequest } from '../api/confirmRequest';
 
 type ConfirmRequestProps = {
   bookingId: string;
+  triggerButton?: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 };
 
-export const ConfirmRequest = ({ bookingId }: ConfirmRequestProps) => {
+export const ConfirmRequest = ({ bookingId, triggerButton }: ConfirmRequestProps) => {
   const confirmRequestMutation = useConfirmRequest();
 
   return (
@@ -13,7 +14,7 @@ export const ConfirmRequest = ({ bookingId }: ConfirmRequestProps) => {
       icon="info"
       title="Confirm Request"
       body="Are you sure you want to confirm this request?"
-      triggerButton={<Button variant="primary">Confirm</Button>}
+      triggerButton={triggerButton ? triggerButton : <Button variant="primary">Confirm</Button>}
       confirmButton={
         <Button
           isLoading={confirmRequestMutation.isLoading}

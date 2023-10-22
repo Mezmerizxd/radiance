@@ -14,11 +14,12 @@ type SelectFieldProps = FieldWrapperPassThroughProps & {
   className?: string;
   defaultValue?: string;
   placeholder?: string;
+  disabled?: boolean;
   registration: Partial<UseFormRegisterReturn>;
 };
 
 export const SelectField = (props: SelectFieldProps) => {
-  const { label, options, error, className, defaultValue, registration, placeholder } = props;
+  const { label, options, error, className, defaultValue, disabled, registration, placeholder } = props;
   return (
     <FieldWrapper label={label} error={error}>
       <select
@@ -29,6 +30,7 @@ export const SelectField = (props: SelectFieldProps) => {
           className,
         )}
         defaultValue={defaultValue}
+        disabled={disabled}
         {...registration}
       >
         {options.map(({ label, value }) => (

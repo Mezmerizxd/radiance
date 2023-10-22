@@ -11,6 +11,10 @@ export const Dashboard = () => {
   const addressesQuery = useAddresses();
   const bookingsQuery = useBookings();
 
+  // Filter out bookings that you dont own
+  // bookingsQuery.data[0].account.id;
+  bookingsQuery.data = bookingsQuery.data?.filter((booking) => booking.account.id === user.profile.id);
+
   const requests = bookingsQuery.data?.filter((booking) => booking.confirmed === false);
   const confirmed = bookingsQuery.data?.filter((booking) => booking.confirmed === true);
 

@@ -27,7 +27,7 @@ const SideNavigation = ({ onSelect }: { onSelect?: () => void }) => {
   const navigation = [
     { name: 'Dashboard', to: '.', icon: HomeIcon },
     checkAccess({ allowedRoles: [ROLES.USER, ROLES.DEVELOPER, ROLES.ADMIN] }) && {
-      name: 'Order',
+      name: 'Request Order',
       to: './booking/order',
       icon: BellIcon,
     },

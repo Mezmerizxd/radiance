@@ -6,6 +6,7 @@
     "start": "lerna run start --stream --parallel",
     "watch": "lerna run watch --stream --parallel",
     "build": "lerna run build --stream --parallel",
+    "test": "lerna run test --parallel",
     "client:start": "lerna run start --scope client --stream",
     "client:build": "lerna run build --scope client --stream",
     "client:watch": "lerna run watch --scope client --stream",
@@ -24,10 +25,22 @@
     "@prisma/client": "5.4.2",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-query": "^5.0.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-react": "^7.22.15",
+    "@testing-library/dom": "^9.3.3",
+    "babel-jest": "^29.7.0",
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^7.3.0",
+    "jest": "^29.7.0",
+    "lerna": "^7.4.1",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.4.2",
+    "react-test-renderer": "^18.2.0",
+    "ts-jest": "^29.1.1",
+    "@types/jest": "^29.5.6",
     "@types/node": "^20.8.7",
     "@types/react": "^18.2.29",
     "@types/react-dom": "^18.2.14",
@@ -67,11 +80,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "dotenv-cli": "^7.3.0",
-    "lerna": "^7.4.1",
-    "nodemon": "^3.0.1",
-    "prisma": "^5.4.2"
-  }
+  "devDependencies": {}
 }

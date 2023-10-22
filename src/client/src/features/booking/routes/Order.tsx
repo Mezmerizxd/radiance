@@ -40,9 +40,6 @@ export const Order = () => {
                     isBooked = true;
                     return (
                       <>
-                        {/* <div className="w-fit border p-1 rounded-md border-red-600/50 bg-red-600/10 text-red-600 text-xs">
-                          <p>Booked</p>
-                        </div> */}
                         <EditOrder booking={booking} />
                         <div className="pt-1">
                           {booking.account.id === user.profile.id &&
@@ -74,4 +71,3 @@ export const Order = () => {
     </ContentLayout>
   );
 };
-// format(new Date(entry.date), 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')

@@ -171,7 +171,7 @@ class Engine {
     return await this.Post('/account/addresses/create', true, data);
   }
 
-  public async RescheduleBooking(data: { bookingId: string; date: Date }): Promise<{
+  public async RescheduleBooking(data: { bookingId: string; date: Date; timeSlot: number }): Promise<{
     server: BaseResponse;
     data: ReturnType<PatchEvents['/bookings/reschedule']> | null;
   }> {

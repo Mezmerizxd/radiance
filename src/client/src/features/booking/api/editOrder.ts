@@ -15,6 +15,7 @@ export const EditOrder = async (data: EditOrderDTO) => {
   const response = await engine.RescheduleBooking({
     date: data.date,
     bookingId: data.bookingId,
+    timeSlot: Number(data.timeSlot),
   });
   if (!response.server.success) {
     throw new Error(response.server.error);

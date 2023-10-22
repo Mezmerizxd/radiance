@@ -1,9 +1,10 @@
 import * as z from 'zod';
 
-import { Button } from '../../../components/Elements';
+import { Button, ConfirmationDialog } from '../../../components/Elements';
 import { Form, FormDrawer, SelectField, TextAreaField } from '../../../components/Form';
 import { CreateOrderDTO, useCreateOrder } from '../api/createOrder';
 import { useAddresses } from '../../users/api/getAddresses';
+import { useNavigate } from 'react-router';
 
 const schema = z.object({
   serviceType: z.string().min(0, 'Required'),
@@ -16,8 +17,31 @@ export const CreateOrder = ({ date }: { date: Date }) => {
   const createOrderMutation = useCreateOrder();
   const addressesQuery = useAddresses();
 
-  if (!addressesQuery?.data) {
-    return null;
+  if (addressesQuery?.data.length <= 0) {
+    const navigate = useNavigate();
+    return (
+      <ConfirmationDialog
+        icon="danger"
+        title="No Address Found"
+        body="You need to add an address before you can start booking. Go to your Profile to add it."
+        triggerButton={
+          <div className="w-fit border p-1 rounded-md border-green-500/50 bg-green-500/10 text-green-500 text-xs">
+            <p>Book</p>
+          </div>
+        }
+        confirmButton={
+          <Button
+            type="button"
+            className="bg-radiance-dark"
+            onClick={() => {
+              navigate('/app/profile');
+            }}
+          >
+            Add Address
+          </Button>
+        }
+      />
+    );
   }
 
   return (
@@ -85,6 +109,11 @@ export const CreateOrder = ({ date }: { date: Date }) => {
               error={formState.errors['additionalNotes']}
               registration={register('additionalNotes')}
             />
+
+            <div className="text-md text-white-dark space-y-2">
+              <p>When the order is confirmed, you cannot change the Time Slot or Cancel the order.</p>
+              <p>Payment will be done through Stripe and a Payment Link will be sent to you by Email.</p>
+            </div>
           </>
         )}
       </Form>

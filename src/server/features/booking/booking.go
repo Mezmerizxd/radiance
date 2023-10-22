@@ -18,7 +18,7 @@ type Booking interface {
 	ConfirmBooking(bookingID string) (*types.Booking, error)
 	ConfirmBookingPayment(bookingID string) (*types.Booking, error)
 	RescheduleConfirmedBooking(bookingID string, date time.Time) (*types.Booking, error)
-	RescheduleBooking(bookingID string, date time.Time) (*types.Booking, error)
+	RescheduleBooking(data types.RescheduleConfirmedBooking) (*types.Booking, error)
 }
 
 type booking struct{}
@@ -168,22 +168,14 @@ func (b *booking) RescheduleConfirmedBooking(bookingID string, date time.Time) (
 	return booking, nil
 }
 
-func (b *booking) RescheduleBooking(bookingID string, date time.Time) (*types.Booking, error) {
-	booked, err := b.IsDateBooked(date)
+func (b *booking) RescheduleBooking(data types.RescheduleConfirmedBooking) (*types.Booking, error) {
+	booking, err := database.GetBookingByID(data.BookingID)
 	if err != nil {
 		return nil, err
 	}
 
-	if booked {
-		return nil, types.ErrorDateAlreadyBooked
-	}
-
-	booking, err := database.GetBookingByID(bookingID)
-	if err != nil {
-		return nil, err
-	}
-
-	booking.Date = date
+	booking.Date = data.Date
+	booking.TimeSlot = data.TimeSlot
 	booking.Confirmed = false
 
 	err = database.UpdateBooking(*booking)
