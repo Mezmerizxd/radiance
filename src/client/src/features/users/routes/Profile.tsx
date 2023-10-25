@@ -4,6 +4,7 @@ import { useAuth } from '../../../libs/auth';
 import { useAddresses } from '../api/getAddresses';
 import { CreateAddress } from '../components/CreateAddress';
 import { DeleteAddress } from '../components/DeleteAddress';
+import { UpdateAddress } from '../components/UpdateAddress';
 
 import { UpdateProfile } from '../components/UpdateProfile';
 
@@ -79,6 +80,13 @@ export const Profile = () => {
                   {
                     title: 'Postal Code',
                     field: 'postalCode',
+                  },
+                  {
+                    title: '',
+                    field: 'id',
+                    Cell({ entry: address }) {
+                      return <UpdateAddress address={address} />;
+                    },
                   },
                   {
                     title: '',
