@@ -7,6 +7,7 @@ import { DeleteAddress } from '../components/DeleteAddress';
 import { UpdateAddress } from '../components/UpdateAddress';
 
 import { UpdateProfile } from '../components/UpdateProfile';
+import { UpdatePassword } from '../components/UpdatePassword';
 
 type EntryProps = {
   label: string;
@@ -45,6 +46,7 @@ export const Profile = () => {
               <Entry label="Biography" value={user.profile.biography || 'None'} />
             </dl>
           </div>
+          <UpdatePassword />
         </div>
       </ContentLayout>
       <ContentLayout title="Address">

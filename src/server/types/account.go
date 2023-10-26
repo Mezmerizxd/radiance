@@ -17,6 +17,8 @@ var (
 	ErrorEmailUsed = errors.New("this email is being used by someone else")
 	ErrorEmailLength = errors.New("email is either too long or too short")
 
+	ErrorPasswordLength = errors.New("password is either too long or too short")
+
 	ErrorFailedToCreateAccount = errors.New("failed to create account")
 	ErrorFailedToGenerateAccess = errors.New("failed to generate token")
 	
@@ -53,4 +55,9 @@ type CreateAccountData struct {
 type DeleteAccountData struct {
 	Identifier        string     `json:"Identifier"`
 	Value string `json:"value"`
+}
+
+type UpdatePasswordData struct {
+	Password string `json:"password"`
+	NewPassword string `json:"newPassword"`
 }

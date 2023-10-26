@@ -198,6 +198,13 @@ class Engine {
     return await this.Post('/bookings/create', true, data);
   }
 
+  public async UpdatePassword(data: { password: string; newPassword: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PatchEvents['/account/password/update']> | null;
+  }> {
+    return await this.Patch('/account/password/update', true, data);
+  }
+
   private async Patch<T extends keyof PatchEvents>(
     event: T,
     authorization: boolean,
