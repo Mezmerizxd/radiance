@@ -24,6 +24,7 @@ type Account interface {
 	UpdateAddress(c *gin.Context)
 	DeleteAddress(c *gin.Context)
 	CreateAddress(c *gin.Context)
+	UpdatePassword(c *gin.Context)
 }
 
 type account struct {
@@ -456,5 +457,48 @@ func (a *account) CreateAddress(c *gin.Context) {
 			"error": nil,
 		},
 		"data": address,
+	})
+}
+
+/*
+curl \
+-X PATCH http://localhost:4000/api/v1/account/password/update \
+-H "Content-Type: application/json" \
+-d "{\"password\":\"a\", \"newPassword\":\"b\"}" TODO: Setup curl data
+*/
+func (a *account) UpdatePassword(c *gin.Context) {
+	var data types.UpdatePasswordData
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,	
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	account := c.MustGet(types.AccountCtx).(*types.Account)
+
+	err := a.Features.Account.UpdatePassword(*account, data)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,	
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,	
+			"error": nil,
+		},
+		"data": nil,
 	})
 }

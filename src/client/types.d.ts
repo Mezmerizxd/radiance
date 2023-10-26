@@ -123,6 +123,7 @@ type PatchEvents = {
   /* ACCOUNT */
   '/account/profile/update': () => Profile;
   '/account/addresses/update': () => Address;
+  '/account/password/update': () => null;
 
   /* BOOKING */
   '/bookings/confirm': () => Booking;

@@ -4,8 +4,10 @@ import { useAuth } from '../../../libs/auth';
 import { useAddresses } from '../api/getAddresses';
 import { CreateAddress } from '../components/CreateAddress';
 import { DeleteAddress } from '../components/DeleteAddress';
+import { UpdateAddress } from '../components/UpdateAddress';
 
 import { UpdateProfile } from '../components/UpdateProfile';
+import { UpdatePassword } from '../components/UpdatePassword';
 
 type EntryProps = {
   label: string;
@@ -44,6 +46,7 @@ export const Profile = () => {
               <Entry label="Biography" value={user.profile.biography || 'None'} />
             </dl>
           </div>
+          <UpdatePassword />
         </div>
       </ContentLayout>
       <ContentLayout title="Address">
@@ -79,6 +82,13 @@ export const Profile = () => {
                   {
                     title: 'Postal Code',
                     field: 'postalCode',
+                  },
+                  {
+                    title: '',
+                    field: 'id',
+                    Cell({ entry: address }) {
+                      return <UpdateAddress address={address} />;
+                    },
                   },
                   {
                     title: '',

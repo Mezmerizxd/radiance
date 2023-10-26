@@ -24,6 +24,7 @@ type Account interface {
 	GetAddresses(account types.Account) ([]types.Address, error)
 	UpdateAddress(account types.Account, data types.Address) (*types.Address, error)
 	CreateAddress(account types.Account, data types.Address) (*types.Address, error)
+	UpdatePassword(account types.Account, data types.UpdatePasswordData) (error)
 }
 
 type account struct{}
@@ -308,4 +309,40 @@ func (a *account) CreateAddress(account types.Account, data types.Address) (*typ
 		PostalCode: address.PostalCode,
 		AccountID: address.AccountID,
 	}, nil
+}
+
+func (a *account) UpdatePassword(account types.Account, data types.UpdatePasswordData) (error) {
+	if len(data.Password) < 1 {
+		return types.ErrorPasswordLength
+	} else if len(data.NewPassword) < 1 {
+		return types.ErrorPasswordLength
+	}
+
+	hashedPassword := utils.StringToSha512(data.Password)
+	if hashedPassword != account.Password {
+		return types.ErrorPasswordsDoNotMatch
+	}
+
+	newHashedPassword := utils.StringToSha512(data.NewPassword)
+
+	newAccount := types.Account{
+		ID: account.ID,
+		Email: account.Email,
+		Username: account.Username,
+		Password: newHashedPassword,
+		Token: account.Token,
+		TokenExp: account.TokenExp,
+		Role: account.Role,
+		Avatar: account.Avatar,
+		Biography: account.Biography,
+		CreatedAt: account.CreatedAt,
+		UpdatedAt: account.UpdatedAt,
+	}
+
+	err := database.UpdateAccount(newAccount)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
