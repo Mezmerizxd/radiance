@@ -290,6 +290,12 @@ class Engine {
   private getServerUrl(): string {
     const { port } = window.location;
 
+    if (process.env.SERVER_HOST) {
+      return process.env.SERVER_HOST;
+    }
+
+    console.warn('No SERVER_HOST environment variable found, using default');
+
     if (port === '8080') {
       return 'http://localhost:4000/api/v1';
     } else {

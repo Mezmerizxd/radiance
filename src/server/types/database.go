@@ -46,6 +46,7 @@ type Account struct {
 	Role      string      `json:"role"`
 	Avatar    *string    `json:"avatar"`
 	Biography *string    `json:"biography"`
+	VerifiedEmail bool    `json:"verifiedEmail"`
 	CreatedAt time.Time  `json:"createdAt"`
 	UpdatedAt time.Time  `json:"updatedAt"`
 }
@@ -57,6 +58,7 @@ type Profile struct {
 	Role      string    `json:"role"`
 	Avatar    *string   `json:"avatar,omitempty"`
 	Biography *string   `json:"biography,omitempty"`
+	VerifiedEmail bool `json:"verifiedEmail"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 }

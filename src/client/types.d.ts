@@ -8,6 +8,7 @@ interface Profile {
   role: 'ADMIN' | 'DEVELOPER' | 'USER';
   avatar?: string | null;
   biography?: string | null;
+  verifiedEmail?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -22,6 +23,7 @@ interface Account {
   role: 'ADMIN' | 'DEVELOPER' | 'USER';
   avatar?: string | null;
   biography?: string | null;
+  verifiedEmail: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

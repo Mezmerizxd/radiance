@@ -21,6 +21,7 @@ func GetAllAccounts() (*[]types.Account, error) {
 			role,
 			avatar,
 			biography,
+			"verifiedEmail",
 			"createdAt",
 			"updatedAt"
 		FROM
@@ -46,6 +47,7 @@ func GetAllAccounts() (*[]types.Account, error) {
 			&acc.Role, 
 			&acc.Avatar, 
 			&acc.Biography, 
+			&acc.VerifiedEmail,
 			&acc.CreatedAt, 
 			&acc.UpdatedAt,
 		)
@@ -76,6 +78,7 @@ func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Accoun
 			role,
 			avatar,
 			biography,
+			"verifiedEmail",
 			"createdAt", 
 			"updatedAt" 
 		FROM 
@@ -99,6 +102,7 @@ func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Accoun
 			&acc.Role, 
 			&acc.Avatar, 
 			&acc.Biography, 
+			&acc.VerifiedEmail,
 			&acc.CreatedAt, 
 			&acc.UpdatedAt,
 		)
@@ -146,9 +150,10 @@ func UpdateAccount(account types.Account) error {
 			role=$6,
 			avatar=$7, 
 			biography=$8, 
+			"verifiedEmail"=$9,
 			"updatedAt"=now() 
 		WHERE 
-			id=$9`, 
+			id=$10`, 
 		account.Email, 
 		account.Username, 
 		account.Password, 
@@ -157,6 +162,7 @@ func UpdateAccount(account types.Account) error {
 		account.Role, 
 		account.Avatar, 
 		account.Biography, 
+		account.VerifiedEmail,
 		account.ID,
 	)
 	if err != nil {
@@ -184,6 +190,7 @@ func CreateAccount(account types.Account) error {
 				role, 
 				avatar, 
 				biography, 
+				"verifiedEmail",
 				"createdAt", 
 				"updatedAt"
 			) 
@@ -197,6 +204,7 @@ func CreateAccount(account types.Account) error {
 			$7, 
 			$8, 
 			$9, 
+			$10,
 			now(), 
 			now()
 		)`, 
@@ -209,6 +217,7 @@ func CreateAccount(account types.Account) error {
 		account.Role, 
 		account.Avatar, 
 		account.Biography,
+		account.VerifiedEmail,
 	)
 	if err != nil {
 		fmt.Println("Database, CreateAccount:", err)

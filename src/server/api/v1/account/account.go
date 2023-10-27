@@ -176,6 +176,7 @@ func (a *account) Profile(c *gin.Context) {
 		Role: account.Role,
 		Avatar: account.Avatar,
 		Biography: account.Biography,
+		VerifiedEmail: account.VerifiedEmail,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}

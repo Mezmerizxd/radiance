@@ -211,6 +211,7 @@ func (a *account) GetProfile(token string) (*types.Profile, error) {
 		Role: account.Role,
 		Avatar: account.Avatar,
 		Biography: account.Biography,
+		VerifiedEmail: account.VerifiedEmail,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}, nil
@@ -227,6 +228,7 @@ func (a *account) UpdateProfile(account *types.Account, data *types.Profile) (*t
 		Role: account.Role,
 		Avatar: data.Avatar,
 		Biography: data.Biography,
+		VerifiedEmail: account.VerifiedEmail,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}
@@ -243,6 +245,7 @@ func (a *account) UpdateProfile(account *types.Account, data *types.Profile) (*t
 		Role: newAccount.Role,
 		Avatar: newAccount.Avatar,
 		Biography: newAccount.Biography,
+		VerifiedEmail: newAccount.VerifiedEmail,
 		CreatedAt: newAccount.CreatedAt,
 		UpdatedAt: newAccount.UpdatedAt,
 	}, nil
@@ -335,6 +338,7 @@ func (a *account) UpdatePassword(account types.Account, data types.UpdatePasswor
 		Role: account.Role,
 		Avatar: account.Avatar,
 		Biography: account.Biography,
+		VerifiedEmail: account.VerifiedEmail,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}
