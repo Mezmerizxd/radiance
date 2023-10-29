@@ -17,7 +17,7 @@ export const CreateOrder = ({ date }: { date: Date }) => {
   const createOrderMutation = useCreateOrder();
   const addressesQuery = useAddresses();
 
-  if (addressesQuery?.data.length <= 0) {
+  if (addressesQuery?.data?.length <= 0) {
     const navigate = useNavigate();
     return (
       <ConfirmationDialog
