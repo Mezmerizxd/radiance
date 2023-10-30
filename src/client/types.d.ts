@@ -94,6 +94,7 @@ type PostEvents = {
   '/account/delete': () => null;
   '/account/addresses/delete': () => null;
   '/account/addresses/create': () => Address;
+  '/account/email/verify': () => null;
 
   /* BOOKING */
   '/bookings/cancel': () => null;

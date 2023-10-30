@@ -22,6 +22,7 @@ func GetAllAccounts() (*[]types.Account, error) {
 			avatar,
 			biography,
 			"verifiedEmail",
+			"verifyEmailCode",
 			"createdAt",
 			"updatedAt"
 		FROM
@@ -48,6 +49,7 @@ func GetAllAccounts() (*[]types.Account, error) {
 			&acc.Avatar, 
 			&acc.Biography, 
 			&acc.VerifiedEmail,
+			&acc.VerifyEmailCode,
 			&acc.CreatedAt, 
 			&acc.UpdatedAt,
 		)
@@ -79,6 +81,7 @@ func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Accoun
 			avatar,
 			biography,
 			"verifiedEmail",
+			"verifyEmailCode",
 			"createdAt", 
 			"updatedAt" 
 		FROM 
@@ -103,6 +106,7 @@ func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Accoun
 			&acc.Avatar, 
 			&acc.Biography, 
 			&acc.VerifiedEmail,
+			&acc.VerifyEmailCode,
 			&acc.CreatedAt, 
 			&acc.UpdatedAt,
 		)
@@ -113,6 +117,7 @@ func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Accoun
 
 		return &acc, nil
 	} else {
+		fmt.Println("Database, GetAccountBy:", rows.Err())
 		return nil, types.ErrorAccountDoesNotExist
 	}
 }
@@ -133,6 +138,65 @@ func GetAccountByToken(token string) (*types.Account, error) {
 	return GetAccountBy(types.AccountSearchParameter(types.Token), token)
 }
 
+func GetAccountByVerifyEmailCode(code string) (*types.Account, error) {
+	if connection == nil {
+		return nil, types.ErrorFailedToConnectToDatabase
+	}
+
+	rows, err := connection.Query(`
+		SELECT
+			id,
+			email,
+			username,
+			password,
+			token,
+			"tokenExp",
+			role,
+			avatar,
+			biography,
+			"verifiedEmail",
+			"verifyEmailCode",
+			"createdAt",
+			"updatedAt"
+		FROM
+			public."Accounts"
+		WHERE
+			"verifyEmailCode" = $1`, code)
+	if err != nil {
+		fmt.Println("Database, GetAccountByVerifyEmailCode:", err)
+		return nil, types.ErrorFailedToQueryDatabase
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		var acc types.Account
+		err := rows.Scan(
+			&acc.ID, 
+			&acc.Email, 
+			&acc.Username, 
+			&acc.Password, 
+			&acc.Token, 
+			&acc.TokenExp,
+			&acc.Role, 
+			&acc.Avatar, 
+			&acc.Biography, 
+			&acc.VerifiedEmail,
+			&acc.VerifyEmailCode,
+			&acc.CreatedAt, 
+			&acc.UpdatedAt,
+		)
+		if err != nil {
+			fmt.Println("Database, GetAccountByVerifyEmailCode:", err)
+			return nil, types.ErrorFailedToScanQueryResult
+		}
+
+		return &acc, nil
+	} else {
+		fmt.Println("Database, GetAccountByVerifyEmailCode:", rows.Err())
+		return nil, types.ErrorAccountDoesNotExist
+	}
+}
+
 func UpdateAccount(account types.Account) error {
 	if connection == nil {
 		return types.ErrorFailedToConnectToDatabase
@@ -151,9 +215,10 @@ func UpdateAccount(account types.Account) error {
 			avatar=$7, 
 			biography=$8, 
 			"verifiedEmail"=$9,
+			"verifyEmailCode"=$10,
 			"updatedAt"=now() 
 		WHERE 
-			id=$10`, 
+			id=$11`, 
 		account.Email, 
 		account.Username, 
 		account.Password, 
@@ -163,6 +228,7 @@ func UpdateAccount(account types.Account) error {
 		account.Avatar, 
 		account.Biography, 
 		account.VerifiedEmail,
+		account.VerifyEmailCode,
 		account.ID,
 	)
 	if err != nil {
@@ -191,6 +257,7 @@ func CreateAccount(account types.Account) error {
 				avatar, 
 				biography, 
 				"verifiedEmail",
+				"verifyEmailCode",
 				"createdAt", 
 				"updatedAt"
 			) 
@@ -205,6 +272,7 @@ func CreateAccount(account types.Account) error {
 			$8, 
 			$9, 
 			$10,
+			$11,
 			now(), 
 			now()
 		)`, 
@@ -218,6 +286,7 @@ func CreateAccount(account types.Account) error {
 		account.Avatar, 
 		account.Biography,
 		account.VerifiedEmail,
+		account.VerifyEmailCode,
 	)
 	if err != nil {
 		fmt.Println("Database, CreateAccount:", err)

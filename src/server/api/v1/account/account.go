@@ -25,6 +25,7 @@ type Account interface {
 	DeleteAddress(c *gin.Context)
 	CreateAddress(c *gin.Context)
 	UpdatePassword(c *gin.Context)
+	VerifyEmail(c *gin.Context)
 }
 
 type account struct {
@@ -484,6 +485,47 @@ func (a *account) UpdatePassword(c *gin.Context) {
 	account := c.MustGet(types.AccountCtx).(*types.Account)
 
 	err := a.Features.Account.UpdatePassword(*account, data)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,	
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,	
+			"error": nil,
+		},
+		"data": nil,
+	})
+}
+
+/*
+curl \
+-X POST http://localhost:4000/api/v1/account/verify/email \
+-H "Content-Type: application/json" \
+-d "{\"code\":\"a\"}" TODO: Setup curl data
+*/
+func (a *account) VerifyEmail(c *gin.Context) {
+	var data types.VerifyAccountData
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,	
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	err := a.Features.Account.VerifyEmail(data.Code)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"server": gin.H{

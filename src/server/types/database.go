@@ -19,6 +19,7 @@ const (
 	Username
 	Email
 	Token
+	VerifyEmailCode
 )
 
 func (p AccountSearchParameter) String() string {
@@ -31,6 +32,8 @@ func (p AccountSearchParameter) String() string {
 		return "email"
 	case Token:
 		return "token"
+	case VerifyEmailCode:
+		return "'verifyEmailCode'"
 	default:
 		return "unknown"
 	}
@@ -47,6 +50,7 @@ type Account struct {
 	Avatar    *string    `json:"avatar"`
 	Biography *string    `json:"biography"`
 	VerifiedEmail bool    `json:"verifiedEmail"`
+	VerifyEmailCode *string `json:"verifyEmailCode,omitempty"`
 	CreatedAt time.Time  `json:"createdAt"`
 	UpdatedAt time.Time  `json:"updatedAt"`
 }

@@ -26,6 +26,8 @@ type EnvironmentConfig struct {
 	SocketHost string `mapstructure:"SOCKET_HOST"`
 	StripeKey string `mapstructure:"STRIPE_KEY"`
 	StripeWebhookKey string `mapstructure:"STRIPE_WEBHOOK_KEY"`
+	EmailUsername string `mapstructure:"EMAIL_USERNAME"`
+	EmailPassword string `mapstructure:"EMAIL_PASSWORD"`
 }
 
 type PackageConfig struct {

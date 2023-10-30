@@ -3,6 +3,7 @@ package account
 import (
 	"errors"
 	"radiance/src/server/pkg/database"
+	"radiance/src/server/pkg/email"
 	"radiance/src/server/pkg/utils"
 	types "radiance/src/server/types"
 	"time"
@@ -25,6 +26,7 @@ type Account interface {
 	UpdateAddress(account types.Account, data types.Address) (*types.Address, error)
 	CreateAddress(account types.Account, data types.Address) (*types.Address, error)
 	UpdatePassword(account types.Account, data types.UpdatePasswordData) (error)
+	VerifyEmail(code string) (error)
 }
 
 type account struct{}
@@ -84,6 +86,16 @@ func (a *account) Create(data types.CreateAccountData) (*types.Account, error) {
 		return nil, err
 	}
 
+	verifyCode, err := a.GenerateToken()
+	if err != nil {
+		return nil, err
+	}
+
+	err = email.SendEmailVerification(data.Email, verifyCode.Token)
+	if err != nil {
+		return nil, err
+	}
+
 	newAccount := types.Account{
 		ID: uuid.New().String(),
 		Email: data.Email,
@@ -92,6 +104,7 @@ func (a *account) Create(data types.CreateAccountData) (*types.Account, error) {
 		Token: &access.Token,
 		TokenExp: &access.TokenExp,
 		Role: "USER",
+		VerifyEmailCode: &verifyCode.Token,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -229,6 +242,7 @@ func (a *account) UpdateProfile(account *types.Account, data *types.Profile) (*t
 		Avatar: data.Avatar,
 		Biography: data.Biography,
 		VerifiedEmail: account.VerifiedEmail,
+		VerifyEmailCode: account.VerifyEmailCode,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}
@@ -339,11 +353,42 @@ func (a *account) UpdatePassword(account types.Account, data types.UpdatePasswor
 		Avatar: account.Avatar,
 		Biography: account.Biography,
 		VerifiedEmail: account.VerifiedEmail,
+		VerifyEmailCode: account.VerifyEmailCode,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}
 
 	err := database.UpdateAccount(newAccount)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *account) VerifyEmail(code string) (error) {
+	account, err := database.GetAccountByVerifyEmailCode(code)
+	if err != nil {
+		return err
+	}
+
+	newAccount := types.Account{
+		ID: account.ID,
+		Email: account.Email,
+		Username: account.Username,
+		Password: account.Password,
+		Token: account.Token,
+		TokenExp: account.TokenExp,
+		Role: account.Role,
+		Avatar: account.Avatar,
+		Biography: account.Biography,
+		VerifiedEmail: true,
+		VerifyEmailCode: account.VerifyEmailCode,
+		CreatedAt: account.CreatedAt,
+		UpdatedAt: account.UpdatedAt,
+	}
+
+	err = database.UpdateAccount(newAccount)
 	if err != nil {
 		return err
 	}

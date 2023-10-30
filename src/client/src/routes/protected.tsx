@@ -4,6 +4,7 @@ import { MainLayout } from '../components/Layout';
 
 import { lazyImport } from '../libs/lazyImport';
 import { Spinner } from '../components/Elements';
+import { Verify } from '../features/users/routes/Verify';
 
 // const { DiscussionsRoutes } = lazyImport(() => import('../features/discussions'), 'DiscussionsRoutes');
 const { Dashboard } = lazyImport(() => import('../features/misc'), 'Dashboard');
