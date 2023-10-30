@@ -52,6 +52,7 @@ func New(handler *gin.Engine, upgrader *websocket.Upgrader, cfg *Config) {
 		v1.POST("/account/addresses/delete", UseAuthorization(cfg, account.DeleteAddress, &types.UserRole))
 		v1.POST("/account/addresses/create", UseAuthorization(cfg, account.CreateAddress, &types.UserRole))
 		v1.PATCH("/account/password/update", UseAuthorization(cfg, account.UpdatePassword, &types.UserRole))
+		v1.POST("/account/email/verify", account.VerifyEmail)
 
 		/* Bookings */
 		v1.GET("/bookings/get-all", UseAuthorization(cfg, booking.GetAllBookings, &types.UserRole))

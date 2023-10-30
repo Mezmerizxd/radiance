@@ -205,6 +205,13 @@ class Engine {
     return await this.Patch('/account/password/update', true, data);
   }
 
+  public async VerifyEmail(data: { code: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PostEvents['/account/email/verify']> | null;
+  }> {
+    return await this.Post('/account/email/verify', true, data);
+  }
+
   private async Patch<T extends keyof PatchEvents>(
     event: T,
     authorization: boolean,

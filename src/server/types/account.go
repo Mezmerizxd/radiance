@@ -61,3 +61,7 @@ type UpdatePasswordData struct {
 	Password string `json:"password"`
 	NewPassword string `json:"newPassword"`
 }
+
+type VerifyAccountData struct {
+	Code string `json:"code"`
+}

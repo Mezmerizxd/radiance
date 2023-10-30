@@ -14,6 +14,7 @@ import (
 	"radiance/src/server/features/booking"
 	"radiance/src/server/features/payment"
 	"radiance/src/server/pkg/database"
+	"radiance/src/server/pkg/email"
 	env "radiance/src/server/pkg/env"
 	"radiance/src/server/pkg/server"
 )
@@ -39,6 +40,9 @@ func main() {
 	srv := server.New(env.EnvConfigs.Port, &v1.Config{
 		Features: &f,
 	})
+
+	/* Email */
+	email.InitEmailConfigs()
 
 	quitChannel := make(chan bool, 1)
 
