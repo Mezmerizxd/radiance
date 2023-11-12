@@ -27,6 +27,9 @@ type Account interface {
 	CreateAddress(account types.Account, data types.Address) (*types.Address, error)
 	UpdatePassword(account types.Account, data types.UpdatePasswordData) (error)
 	VerifyEmail(code string) (error)
+	ToggleTwoFactor(account types.Account, enabled bool) (error)
+	ForgotPassword(email string) (bool, error)
+	ResetPassword(code string, password string) (error)
 }
 
 type account struct{}
@@ -210,7 +213,6 @@ func (a *account) HasAccess(account types.Account, role string) (bool, error) {
 	return true, nil
 }
 
-
 func (a *account) GetProfile(token string) (*types.Profile, error) {
 	account, err := database.GetAccountByToken(token)
 	if err != nil {
@@ -243,6 +245,8 @@ func (a *account) UpdateProfile(account *types.Account, data *types.Profile) (*t
 		Biography: data.Biography,
 		VerifiedEmail: account.VerifiedEmail,
 		VerifyEmailCode: account.VerifyEmailCode,
+		ForgotPasswordCode: account.ForgotPasswordCode,
+		TwoFactorEnabled: account.TwoFactorEnabled,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}
@@ -354,6 +358,8 @@ func (a *account) UpdatePassword(account types.Account, data types.UpdatePasswor
 		Biography: account.Biography,
 		VerifiedEmail: account.VerifiedEmail,
 		VerifyEmailCode: account.VerifyEmailCode,
+		ForgotPasswordCode: account.ForgotPasswordCode,
+		TwoFactorEnabled: account.TwoFactorEnabled,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}
@@ -384,6 +390,113 @@ func (a *account) VerifyEmail(code string) (error) {
 		Biography: account.Biography,
 		VerifiedEmail: true,
 		VerifyEmailCode: account.VerifyEmailCode,
+		ForgotPasswordCode: account.ForgotPasswordCode,
+		TwoFactorEnabled: account.TwoFactorEnabled,
+		CreatedAt: account.CreatedAt,
+		UpdatedAt: account.UpdatedAt,
+	}
+
+	err = database.UpdateAccount(newAccount)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *account) ToggleTwoFactor(account types.Account, enabled bool) (error) {
+	newAccount := types.Account{
+		ID: account.ID,
+		Email: account.Email,
+		Username: account.Username,
+		Password: account.Password,
+		Token: account.Token,
+		TokenExp: account.TokenExp,
+		Role: account.Role,
+		Avatar: account.Avatar,
+		Biography: account.Biography,
+		VerifiedEmail: account.VerifiedEmail,
+		VerifyEmailCode: account.VerifyEmailCode,
+		ForgotPasswordCode: account.ForgotPasswordCode,
+		TwoFactorEnabled: enabled,
+		CreatedAt: account.CreatedAt,
+		UpdatedAt: account.UpdatedAt,
+	}
+
+	err := database.UpdateAccount(newAccount)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *account) ForgotPassword(_email string) (bool, error) {
+	emailExists, err := database.GetAccountByEmail(_email)
+	if err != nil {
+		return false, err
+	}
+
+	if emailExists != nil {
+		resetCode, err := a.GenerateToken()
+		if err != nil {
+			return false, err
+		}
+
+		err = email.SendForgotPasswordCode(_email, resetCode.Token)
+		if err != nil {
+			return false, err
+		}
+
+		newAccount := types.Account{
+			ID: emailExists.ID,
+			Email: emailExists.Email,
+			Username: emailExists.Username,
+			Password: emailExists.Password,
+			Token: emailExists.Token,
+			TokenExp: emailExists.TokenExp,
+			Role: emailExists.Role,
+			Avatar: emailExists.Avatar,
+			Biography: emailExists.Biography,
+			VerifiedEmail: emailExists.VerifiedEmail,
+			VerifyEmailCode: emailExists.VerifyEmailCode,
+			ForgotPasswordCode: &resetCode.Token,
+			TwoFactorEnabled: emailExists.TwoFactorEnabled,
+			CreatedAt: emailExists.CreatedAt,
+			UpdatedAt: emailExists.UpdatedAt,
+		}
+
+		err = database.UpdateAccount(newAccount)
+		if err != nil {
+			return false, err
+		}
+	}
+
+	return true, nil
+}
+
+func (a *account) ResetPassword(code string, password string) (error) {
+	account, err := database.GetAccountByForgotPasswordCode(code)
+	if err != nil {
+		return err
+	}
+
+	newHashedPassword := utils.StringToSha512(password)
+
+	newAccount := types.Account{
+		ID: account.ID,
+		Email: account.Email,
+		Username: account.Username,
+		Password: newHashedPassword,
+		Token: account.Token,
+		TokenExp: account.TokenExp,
+		Role: account.Role,
+		Avatar: account.Avatar,
+		Biography: account.Biography,
+		VerifiedEmail: account.VerifiedEmail,
+		VerifyEmailCode: account.VerifyEmailCode,
+		ForgotPasswordCode: nil,
+		TwoFactorEnabled: account.TwoFactorEnabled,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
 	}

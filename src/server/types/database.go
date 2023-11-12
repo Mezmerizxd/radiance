@@ -51,6 +51,8 @@ type Account struct {
 	Biography *string    `json:"biography"`
 	VerifiedEmail bool    `json:"verifiedEmail"`
 	VerifyEmailCode *string `json:"verifyEmailCode,omitempty"`
+	ForgotPasswordCode *string `json:"forgotPasswordCode,omitempty"`
+	TwoFactorEnabled bool `json:"twoFactorEnabled"`
 	CreatedAt time.Time  `json:"createdAt"`
 	UpdatedAt time.Time  `json:"updatedAt"`
 }

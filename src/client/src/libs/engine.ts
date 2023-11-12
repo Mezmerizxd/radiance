@@ -212,6 +212,20 @@ class Engine {
     return await this.Post('/account/email/verify', true, data);
   }
 
+  public async ForgotPassword(data: { email: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PostEvents['/account/forgot-password']> | null;
+  }> {
+    return await this.Post('/account/forgot-password', false, data);
+  }
+
+  public async ResetPassword(data: { code: string; password: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PostEvents['/account/reset-password']> | null;
+  }> {
+    return await this.Post('/account/reset-password', false, data);
+  }
+
   private async Patch<T extends keyof PatchEvents>(
     event: T,
     authorization: boolean,

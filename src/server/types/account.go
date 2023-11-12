@@ -65,3 +65,16 @@ type UpdatePasswordData struct {
 type VerifyAccountData struct {
 	Code string `json:"code"`
 }
+
+type UpdateTwoFAData struct {
+	Enabled bool `json:"enabled"`
+}
+
+type ForgotPasswordData struct {
+	Email string `json:"email"`
+}
+
+type ResetPasswordData struct {
+	Code string `json:"code"`
+	Password string `json:"password"`
+}

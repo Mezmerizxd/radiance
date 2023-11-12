@@ -46,3 +46,15 @@ func SendEmailVerification(to, code string) error {
 	body := EmailVerificationButtonTemplate(code, url)
 	return SendEmail(to, "Email Verification", body)
 }
+
+func SendForgotPasswordCode(to, code string) error {
+	var url string
+	if env.EnvConfigs.Mode == "production" {
+		url = "https://radiance-mu.vercel.app/auth/reset-password"
+	} else {
+		url = "http://localhost:8080/auth/reset-password"
+	}
+
+	body := ForgotPasswordButtonTemplate(code, url)
+	return SendEmail(to, "Reset Password", body)
+}
