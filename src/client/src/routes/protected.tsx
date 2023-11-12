@@ -4,7 +4,6 @@ import { MainLayout } from '../components/Layout';
 
 import { lazyImport } from '../libs/lazyImport';
 import { Spinner } from '../components/Elements';
-import { Verify } from '../features/users/routes/Verify';
 
 // const { DiscussionsRoutes } = lazyImport(() => import('../features/discussions'), 'DiscussionsRoutes');
 const { Dashboard } = lazyImport(() => import('../features/misc'), 'Dashboard');
@@ -13,6 +12,7 @@ const { Users } = lazyImport(() => import('../features/users'), 'Users');
 const { Requests } = lazyImport(() => import('../features/booking'), 'Requests');
 const { Active } = lazyImport(() => import('../features/booking'), 'Active');
 const { Order } = lazyImport(() => import('../features/booking'), 'Order');
+const { Chat } = lazyImport(() => import('../features/chat'), 'Chat');
 
 const App = () => {
   return (
@@ -35,6 +35,7 @@ export const protectedRoutes = [
     path: '/app',
     element: <App />,
     children: [
+      { path: 'chat', element: <Chat /> },
       { path: 'booking/order', element: <Order /> },
       { path: 'booking/requests', element: <Requests /> },
       { path: 'booking/active', element: <Active /> },

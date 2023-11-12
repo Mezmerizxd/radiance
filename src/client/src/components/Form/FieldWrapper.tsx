@@ -18,7 +18,7 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
     <div>
       <label className={clsx('block text-sm font-medium text-gray-200', className)}>
         {label}
-        <div className="mt-1">{children}</div>
+        <div className="">{children}</div>
       </label>
       {error?.message && (
         <div role="alert" aria-label={error.message} className="text-sm font-semibold text-red-500">

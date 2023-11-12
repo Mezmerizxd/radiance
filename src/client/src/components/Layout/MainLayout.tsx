@@ -7,6 +7,7 @@ import {
   ArchiveIcon,
   BookOpenIcon,
   BellIcon,
+  ChatIcon,
 } from '@heroicons/react/outline';
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
@@ -30,6 +31,11 @@ const SideNavigation = ({ onSelect }: { onSelect?: () => void }) => {
       name: 'Request Order',
       to: './booking/order',
       icon: BellIcon,
+    },
+    checkAccess({ allowedRoles: [ROLES.USER, ROLES.DEVELOPER, ROLES.ADMIN] }) && {
+      name: 'Chat',
+      to: './chat',
+      icon: ChatIcon,
     },
     checkAccess({ allowedRoles: [ROLES.ADMIN, ROLES.DEVELOPER] }) && {
       name: 'Active Bookings',
