@@ -23,6 +23,8 @@ func GetAllAccounts() (*[]types.Account, error) {
 			biography,
 			"verifiedEmail",
 			"verifyEmailCode",
+			"forgotPasswordCode",
+			"twoFactorEnabled",
 			"createdAt",
 			"updatedAt"
 		FROM
@@ -50,6 +52,8 @@ func GetAllAccounts() (*[]types.Account, error) {
 			&acc.Biography, 
 			&acc.VerifiedEmail,
 			&acc.VerifyEmailCode,
+			&acc.ForgotPasswordCode,
+			&acc.TwoFactorEnabled,
 			&acc.CreatedAt, 
 			&acc.UpdatedAt,
 		)
@@ -82,6 +86,8 @@ func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Accoun
 			biography,
 			"verifiedEmail",
 			"verifyEmailCode",
+			"forgotPasswordCode",
+			"twoFactorEnabled",
 			"createdAt", 
 			"updatedAt" 
 		FROM 
@@ -107,6 +113,8 @@ func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Accoun
 			&acc.Biography, 
 			&acc.VerifiedEmail,
 			&acc.VerifyEmailCode,
+			&acc.ForgotPasswordCode,
+			&acc.TwoFactorEnabled,
 			&acc.CreatedAt, 
 			&acc.UpdatedAt,
 		)
@@ -156,6 +164,8 @@ func GetAccountByVerifyEmailCode(code string) (*types.Account, error) {
 			biography,
 			"verifiedEmail",
 			"verifyEmailCode",
+			"forgotPasswordCode",
+			"twoFactorEnabled",
 			"createdAt",
 			"updatedAt"
 		FROM
@@ -182,6 +192,8 @@ func GetAccountByVerifyEmailCode(code string) (*types.Account, error) {
 			&acc.Biography, 
 			&acc.VerifiedEmail,
 			&acc.VerifyEmailCode,
+			&acc.ForgotPasswordCode,
+			&acc.TwoFactorEnabled,
 			&acc.CreatedAt, 
 			&acc.UpdatedAt,
 		)
@@ -193,6 +205,69 @@ func GetAccountByVerifyEmailCode(code string) (*types.Account, error) {
 		return &acc, nil
 	} else {
 		fmt.Println("Database, GetAccountByVerifyEmailCode:", rows.Err())
+		return nil, types.ErrorAccountDoesNotExist
+	}
+}
+
+func GetAccountByForgotPasswordCode(code string) (*types.Account, error) {
+	if connection == nil {
+		return nil, types.ErrorFailedToConnectToDatabase
+	}
+
+	rows, err := connection.Query(`
+		SELECT
+			id,
+			email,
+			username,
+			password,
+			token,
+			"tokenExp",
+			role,
+			avatar,
+			biography,
+			"verifiedEmail",
+			"verifyEmailCode",
+			"forgotPasswordCode",
+			"twoFactorEnabled",
+			"createdAt",
+			"updatedAt"
+		FROM
+			public."Accounts"
+		WHERE
+			"forgotPasswordCode" = $1`, code)
+	if err != nil {
+		fmt.Println("Database, GetAccountByForgotPasswordCode:", err)
+		return nil, types.ErrorFailedToQueryDatabase
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		var acc types.Account
+		err := rows.Scan(
+			&acc.ID, 
+			&acc.Email, 
+			&acc.Username, 
+			&acc.Password, 
+			&acc.Token, 
+			&acc.TokenExp,
+			&acc.Role, 
+			&acc.Avatar, 
+			&acc.Biography, 
+			&acc.VerifiedEmail,
+			&acc.VerifyEmailCode,
+			&acc.ForgotPasswordCode,
+			&acc.TwoFactorEnabled,
+			&acc.CreatedAt, 
+			&acc.UpdatedAt,
+		)
+		if err != nil {
+			fmt.Println("Database, GetAccountByForgotPasswordCode:", err)
+			return nil, types.ErrorFailedToScanQueryResult
+		}
+
+		return &acc, nil
+	} else {
+		fmt.Println("Database, GetAccountByForgotPasswordCode:", rows.Err())
 		return nil, types.ErrorAccountDoesNotExist
 	}
 }
@@ -216,9 +291,11 @@ func UpdateAccount(account types.Account) error {
 			biography=$8, 
 			"verifiedEmail"=$9,
 			"verifyEmailCode"=$10,
+			"forgotPasswordCode"=$11,
+			"twoFactorEnabled"=$12,
 			"updatedAt"=now() 
 		WHERE 
-			id=$11`, 
+			id=$13`, 
 		account.Email, 
 		account.Username, 
 		account.Password, 
@@ -229,6 +306,8 @@ func UpdateAccount(account types.Account) error {
 		account.Biography, 
 		account.VerifiedEmail,
 		account.VerifyEmailCode,
+		account.ForgotPasswordCode,
+		account.TwoFactorEnabled,
 		account.ID,
 	)
 	if err != nil {
@@ -258,6 +337,8 @@ func CreateAccount(account types.Account) error {
 				biography, 
 				"verifiedEmail",
 				"verifyEmailCode",
+				"forgotPasswordCode",
+				"twoFactorEnabled",
 				"createdAt", 
 				"updatedAt"
 			) 
@@ -273,6 +354,8 @@ func CreateAccount(account types.Account) error {
 			$9, 
 			$10,
 			$11,
+			$12,
+			$13,
 			now(), 
 			now()
 		)`, 
@@ -287,6 +370,8 @@ func CreateAccount(account types.Account) error {
 		account.Biography,
 		account.VerifiedEmail,
 		account.VerifyEmailCode,
+		account.ForgotPasswordCode,
+		account.TwoFactorEnabled,
 	)
 	if err != nil {
 		fmt.Println("Database, CreateAccount:", err)

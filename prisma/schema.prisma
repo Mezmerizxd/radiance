@@ -15,21 +15,24 @@ enum Roles {
 }
 
 model Accounts {
-  id              String     @id @default(uuid())
-  email           String     @unique
-  username        String     @unique
-  password        String
-  token           String?    @unique
-  tokenExp        DateTime?
-  role            Roles      @default(USER)
-  avatar          String?
-  biography       String?
-  verifiedEmail   Boolean    @default(false)
-  verifyEmailCode String?
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-  addresses       Address[]
-  bookings        Bookings[]
+  id                 String     @id @default(uuid())
+  email              String     @unique
+  username           String     @unique
+  password           String
+  token              String?    @unique
+  tokenExp           DateTime?
+  role               Roles      @default(USER)
+  avatar             String?
+  biography          String?
+  verifiedEmail      Boolean    @default(false)
+  verifyEmailCode    String?
+  forgotPasswordCode String?
+  twoFactorEnabled   Boolean    @default(false)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  addresses          Address[]
+  bookings           Bookings[]
+  messages           Messages[]
 }
 
 model Bookings {
@@ -57,4 +60,21 @@ model Address {
   postalCode String
   accountId  String
   account    Accounts @relation(fields: [accountId], references: [id])
+}
+
+model Messages {
+  id             String        @id @default(uuid())
+  message        String
+  messageGroupId String
+  messageGroup   MessageGroups @relation(fields: [messageGroupId], references: [id])
+  accountId      String
+  account        Accounts      @relation(fields: [accountId], references: [id])
+  createdAt      DateTime      @default(now())
+}
+
+model MessageGroups {
+  id        String     @id @default(uuid())
+  accountId String
+  messages  Messages[]
+  createdAt DateTime   @default(now())
 }

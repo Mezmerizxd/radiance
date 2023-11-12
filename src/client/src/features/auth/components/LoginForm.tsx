@@ -4,6 +4,7 @@ import { Button } from '../../../components/Elements';
 import { Form, InputField } from '../../../components/Form';
 import { useAuth } from '../../../libs/auth';
 import { useNotificationStore } from '../../../stores/notifications';
+import { useNavigate } from 'react-router-dom';
 
 const schema = z.object({
   username: z.string().min(1, 'Required'),
@@ -20,6 +21,7 @@ type LoginFormProps = {
 };
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+  const navigate = useNavigate();
   const { addNotification } = useNotificationStore();
   const { login, isLoggingIn } = useAuth();
 
@@ -59,6 +61,12 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 Log in
               </Button>
             </div>
+            <p
+              className="text-white-dark text-md text-center hover:text-white-light cursor-pointer"
+              onClick={() => navigate('/auth/forgot-password')}
+            >
+              Forgotton your password?
+            </p>
           </>
         )}
       </Form>

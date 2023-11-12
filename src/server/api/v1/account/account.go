@@ -26,6 +26,8 @@ type Account interface {
 	CreateAddress(c *gin.Context)
 	UpdatePassword(c *gin.Context)
 	VerifyEmail(c *gin.Context)
+	ForgotPassword(c *gin.Context)
+	ResetPassword(c *gin.Context)
 }
 
 type account struct {
@@ -539,6 +541,88 @@ func (a *account) VerifyEmail(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"server": gin.H{
+			"success": true,	
+			"error": nil,
+		},
+		"data": nil,
+	})
+}
+
+/*
+curl \
+-X POST http://localhost:4000/api/v1/account/forgot-password \
+-H "Content-Type: application/json" \
+-d "{\"email\":\"a\"}" TODO: Setup curl data
+*/
+func (a *account) ForgotPassword(c *gin.Context) {
+	var data types.ForgotPasswordData
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,	
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	_, err := a.Features.Account.ForgotPassword(data.Email)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,	
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,	
+			"error": nil,
+		},
+		"data": nil,
+	})
+}
+
+/*
+curl \
+-X PATCH http://localhost:4000/api/v1/account/reset-password \
+-H "Content-Type: application/json" \
+-d "{\"code\":\"a\", \"newPassword\":\"b\"}" TODO: Setup curl data
+*/
+func (a *account) ResetPassword(c *gin.Context) {
+	var data types.ResetPasswordData
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{	
+				"success": false,	
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+	
+	err := a.Features.Account.ResetPassword(data.Code, data.Password)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{	
+				"success": false,	
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"server": gin.H{	
 			"success": true,	
 			"error": nil,
 		},
