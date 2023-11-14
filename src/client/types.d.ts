@@ -28,40 +28,6 @@ interface Account {
   updatedAt: Date;
 }
 
-interface Xbox {
-  id: string;
-  title: string;
-  description: string;
-  xboxType: string;
-  xboxColour: string;
-  motherboardType: string;
-  serialNumber: string;
-  mfrDate: Date;
-  model: string;
-  nandSize: string;
-  rghVersion: string;
-  rghGlitchType: string;
-  images: string[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Discussion {
-  id: string;
-  message: string;
-  username: string;
-  avatar?: string;
-  replyTo?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Surveillance {
-  id: string;
-  url: string;
-  name: string;
-}
-
 interface Booking {
   id: string;
   date: Date;
@@ -87,6 +53,13 @@ interface Address {
   accountId: string;
 }
 
+interface Message {
+  id: string;
+  message: string;
+  profile: Profile;
+  createdAt: Date;
+}
+
 type PostEvents = {
   /* ACCOUNT */
   '/account/login': () => Account;
@@ -102,6 +75,9 @@ type PostEvents = {
   '/bookings/cancel': () => null;
   '/bookings/is-date-booked': () => boolean;
   '/bookings/create': () => Booking;
+
+  /* MESSAGES */
+  '/messages/send': () => Message;
 };
 
 type GetEvents = {

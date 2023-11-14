@@ -63,18 +63,9 @@ model Address {
 }
 
 model Messages {
-  id             String        @id @default(uuid())
-  message        String
-  messageGroupId String
-  messageGroup   MessageGroups @relation(fields: [messageGroupId], references: [id])
-  accountId      String
-  account        Accounts      @relation(fields: [accountId], references: [id])
-  createdAt      DateTime      @default(now())
-}
-
-model MessageGroups {
-  id        String     @id @default(uuid())
+  id        String   @id @default(uuid())
+  message   String
   accountId String
-  messages  Messages[]
-  createdAt DateTime   @default(now())
+  account   Accounts @relation(fields: [accountId], references: [id])
+  createdAt DateTime @default(now())
 }
